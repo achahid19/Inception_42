@@ -2,3 +2,5 @@
 *~
 *.log
 *.swp
+.VSCode
+.DS_Store
