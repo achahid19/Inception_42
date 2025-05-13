@@ -4,4 +4,5 @@
 *.swp
 .VSCode
 .DS_Store
-./srcs/requirements/web
+srcs/requirements/web/
+.idea.txt
