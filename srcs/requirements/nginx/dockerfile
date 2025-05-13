@@ -1,0 +1,36 @@
+FROM debian:bullseye
+
+# install nginx
+RUN apt-get update && \
+    apt-get install -y nginx openssl && \
+    # Clean unecessary stuffs, optimize image weight.
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create nginx ssl directory
+RUN mkdir -p /etc/nginx/ssl/private && \
+    mkdir -p /etc/nginx/ssl/certs
+
+# set up ssl certificate
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/nginx/ssl/private/nginx-selfsigned_ks.key \
+    -out /etc/nginx/ssl/certs/nginx-selfsigned_ks.crt \
+    -subj "/C=MA/ST=Benguerir/L=Benguerir/O=1337/CN=achahid-.42.fr" && \
+    chmod 600 /etc/nginx/ssl/private/nginx-selfsigned_ks.key
+
+# Configure nginx with TLS1.2v and TLS1.3v
+COPY ./config/default.conf /etc/nginx/conf.d/default.conf
+
+# index to serve for default root
+# update path
+# TO DO.
+# COPY ./html/index.html /var/www/html/index.html
+# COPY ./html/script.js /var/www/html/script.js
+# COPY ./html/index.php /var/www/html/index.php
+
+# added
+# RUN chmod -R 755 /var/www/html
+
+EXPOSE 443
+
+CMD ["nginx", "-g", "daemon off;"]
