@@ -8,6 +8,8 @@ services:
         volumes:
             - ./requirements/web:/var/www/html
         container_name: nginx
+        depends_on:
+            - wordpress
         networks:
             - internal
     wordpress:
@@ -15,6 +17,15 @@ services:
         container_name: wordpress
         volumes:
             - ./requirements/web:/var/www/html
+        depends_on:
+            - mariadb
+        networks:
+            - internal
+    mariadb:
+        build: ./requirements/mariadb
+        container_name: mariadb
+        # volumes:
+        #     - ./database:/var/lib/mysql
         networks:
             - internal
 

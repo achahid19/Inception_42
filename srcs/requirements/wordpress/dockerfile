@@ -2,12 +2,17 @@ FROM debian:bullseye
 
 # install php
 RUN apt-get update && \
-    apt-get install -y php-fpm php7.4-fpm && \
+    apt-get install -y php-fpm php7.4-fpm php7.4-mysql curl && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
+    # stores runtime date
     mkdir -p /run/php && \
     echo "listen = 9000" >> /etc/php/7.4/fpm/pool.d/www.conf
 
 EXPOSE 9000
 
-CMD ["php-fpm7.4", "-F"]
+COPY ./tools/script.sh /usr/bin/script.sh
+
+RUN chmod +x /usr/bin/script.sh
+
+CMD ["/usr/bin/script.sh"]

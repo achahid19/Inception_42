@@ -4,3 +4,4 @@
 *.swp
 .VSCode
 .DS_Store
+./srcs/requirements/web
