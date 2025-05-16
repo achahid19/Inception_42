@@ -1,5 +1,5 @@
-CREATE DATABASE wordpress;
--- TODO: Move sensitive data to environment variables in .env file 
-CREATE USER 'wp-ks'@'%' IDENTIFIED BY '0000';
-GRANT ALL PRIVILEGES ON *.* TO 'wp-ks'@'%' WITH GRANT OPTION;
+-- TODO: Secure hardcoded credentials
+CREATE DATABASE ${DB_DATABASE};
+CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_USER_PASSWORD}';
+GRANT ALL PRIVILEGES ON *.* TO '${DB_USER}'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;

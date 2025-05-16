@@ -118,4 +118,4 @@ collation-server      = utf8mb4_general_ci
 # use this group for options that older servers don't understand
 [mariadb-10.5]
 
-init_file = /etc/mysql/init.sql
+init_file = /etc/mysql/init_db.sql
