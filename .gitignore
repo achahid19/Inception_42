@@ -6,3 +6,4 @@
 .DS_Store
 srcs/requirements/web/
 .idea.txt
+srcs/database
