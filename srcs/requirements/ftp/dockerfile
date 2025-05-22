@@ -1,0 +1,30 @@
+FROM debian:bullseye
+
+# Define build-time variables
+ARG FTP_USER
+ARG FTP_USER_PASSWORD
+
+# Install vsftpd
+RUN apt-get update && \
+    apt-get install -y vsftpd && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Expose FTP control and passive ports
+EXPOSE 20 21 50000-50010
+
+# Create FTP user and directories
+RUN useradd -m ${FTP_USER} && \
+    echo "${FTP_USER}:${FTP_USER_PASSWORD}" | chpasswd && \
+    mkdir -p /home/${FTP_USER}/ftp/wordpress && \
+    chown -R ${FTP_USER}:${FTP_USER} /home/${FTP_USER}/ftp && \
+    chmod -R 755 /home/${FTP_USER}/ftp
+
+# Required by vsftpd
+RUN mkdir -p /var/run/vsftpd/empty
+
+# Copy configuration file
+COPY ./config/vsftpd.conf /etc/vsftpd.conf
+
+# Run vsftpd in foreground
+CMD ["vsftpd", "/etc/vsftpd.conf"]

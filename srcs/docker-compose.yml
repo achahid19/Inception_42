@@ -41,6 +41,23 @@ services:
         restart: always
         networks:
             - internal
+    ftp:
+        build:
+            context: ./requirements/ftp
+            args:
+                FTP_USER: ${FTP_USER}
+                FTP_USER_PASSWORD: ${FTP_USER_PASSWORD}
+        ports:
+            - "21:21"
+            - "20:20"
+            - "50000-50010:50000-50010"
+        env_file:
+            - .env
+        volumes:
+            - ./requirements/web:/home/ks/ftp/wordpress
+        restart: always
+        networks:
+            - internal
 
 networks:
     internal:
