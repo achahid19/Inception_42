@@ -58,6 +58,14 @@ services:
         restart: always
         networks:
             - internal
+    adminer:
+        build: ./requirements/adminer
+        container_name: adminer
+        volumes:
+            - ./requirements/web:/var/www/html
+        restart: always
+        networks:
+            - internal
 
 networks:
     internal:
