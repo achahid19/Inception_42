@@ -6,7 +6,7 @@ services:
         ports:
             - "443:443"
         volumes:
-            - ./requirements/web:/var/www/html
+            - /home/achahid-/data/web:/var/www/html
         container_name: nginx
         depends_on:
             - wordpress
@@ -17,7 +17,7 @@ services:
         build: ./requirements/wordpress
         container_name: wordpress
         volumes:
-            - ./requirements/web:/var/www/html
+            - /home/achahid-/data/web:/var/www/html
         depends_on:
             - mariadb
         networks:
@@ -29,7 +29,7 @@ services:
         build: ./requirements/mariadb
         container_name: mariadb
         volumes:
-            - ./database:/var/lib/mysql/
+            - /home/achahid-/data/database:/var/lib/mysql/
         env_file:
             - .env
         restart: always
@@ -48,13 +48,13 @@ services:
                 FTP_USER: ${FTP_USER}
                 FTP_USER_PASSWORD: ${FTP_USER_PASSWORD}
         ports:
-            - "21:21"
+            - "2121:21"
             - "20:20"
             - "50000-50010:50000-50010"
         env_file:
             - .env
         volumes:
-            - ./requirements/web:/home/ks/ftp/wordpress
+            - /home/achahid-/data/web:/home/achahid-/ftp/wordpress
         restart: always
         networks:
             - internal
@@ -62,7 +62,7 @@ services:
         build: ./requirements/adminer
         container_name: adminer
         volumes:
-            - ./requirements/web:/var/www/html
+            - /home/achahid-/data/web:/var/www/html
         restart: always
         networks:
             - internal
@@ -72,7 +72,7 @@ services:
         volumes:
             - ./backups:/backups
             - ./config:/config
-            - ./:/source
+            - /:/source
         env_file:
             - .env
         environment:
