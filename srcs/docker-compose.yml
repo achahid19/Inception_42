@@ -66,6 +66,22 @@ services:
         restart: always
         networks:
             - internal
+    duplicati:
+        build: ./requirements/duplicati
+        container_name: duplicati
+        volumes:
+            - ./backups:/backups
+            - ./config:/config
+            - ./:/source
+        env_file:
+            - .env
+        environment:
+             - TZ=Etc/UTC
+        restart: always
+        ports:
+            - "8200:8200"
+        networks:
+            - internal
 
 networks:
     internal:

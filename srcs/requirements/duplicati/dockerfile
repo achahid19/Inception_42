@@ -1,0 +1,47 @@
+# Use a lightweight Debian base image
+FROM debian:bullseye
+
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+
+# # add a user for Duplicati
+# RUN useradd -m duplicati
+
+# # Set the working directory
+# WORKDIR /home/duplicati
+
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y \
+        wget \
+        mono-runtime \
+        ca-certificates \
+        libice6 libsm6 libfontconfig1 libicu-dev || \
+        (echo "Failed to install dependencies" && apt-get install -f -y) && \
+        apt-get clean && \
+        rm -rf /var/lib/apt/lists/*
+
+# Download and install Duplicati
+RUN wget https://updates.duplicati.com/stable/duplicati-2.1.0.5_stable_2025-03-04-linux-x64-gui.deb -O duplicati.deb && \
+    dpkg -i duplicati.deb && \ 
+    rm duplicati.deb
+
+# Set permissions for Duplicati
+# RUN chown -R duplicati:duplicati /usr/bin/duplicati-server && \
+#     chmod -R 755 /usr/bin/duplicati-server
+
+# copy the start script
+COPY ./tools/start.sh /usr/bin/start.sh
+# Set permissions for the start script
+RUN chmod +x /usr/bin/start.sh
+
+# Expose default Duplicati port
+EXPOSE 8200
+
+# Command to run Duplicati server
+ENTRYPOINT ["/usr/bin/start.sh"]
+
+# NOTE: duplicati needs an amd64 architecture to run properly.
+# because of dpkg -i duplicati.deb
+# If you are using a different architecture, you may need to build Duplicati from source or use a different image.
+# For more information, visit https://duplicati.com/
