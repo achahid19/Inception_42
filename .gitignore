@@ -7,5 +7,3 @@
 srcs/requirements/web/
 .idea.txt
 srcs/database
-srcs/backups
-srcs/config
