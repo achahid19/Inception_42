@@ -43,6 +43,7 @@ services:
         networks:
             - internal
     ftp:
+        container_name: ftp
         build:
             context: ./requirements/ftp
             args:
