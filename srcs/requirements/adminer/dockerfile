@@ -1,13 +1,8 @@
 FROM debian:bullseye
 
-# install adminer
 RUN apt-get update && \
-	# install wget and php
 	apt-get install -y wget php && \
-	# create directory
 	mkdir -p /var/www/html && \
-	# download adminer
-	# Clean unecessary stuffs, optimize image weight.
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
@@ -15,8 +10,6 @@ COPY ./tools/start.sh /usr/bin/start.sh
 
 RUN chmod +x /usr/bin/start.sh
 
-# expose port 8080
 EXPOSE 8080
 
-# run adminer
 CMD ["usr/bin/start.sh"]
