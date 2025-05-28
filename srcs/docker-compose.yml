@@ -5,6 +5,7 @@ services:
         build: ./requirements/nginx
         ports:
             - "443:443"
+            - "80:80"
         volumes:
             - /home/achahid-/data/web:/var/www/html
         container_name: nginx
@@ -86,9 +87,3 @@ services:
 networks:
     internal:
         driver: bridge
-
-volumes:
-    database:
-        driver: local
-    web:
-        driver: local
