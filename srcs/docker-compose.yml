@@ -56,7 +56,7 @@ services:
         env_file:
             - .env
         volumes:
-            - ftp-data:/home/achahid-/ftp/wordpress
+            - ftp-data:/home/ks/ftp/wordpress
         restart: always
         networks:
             - internal
