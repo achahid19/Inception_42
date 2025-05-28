@@ -1,16 +1,7 @@
-# Use a lightweight Debian base image
 FROM debian:bullseye
 
-# Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 
-# # add a user for Duplicati
-# RUN useradd -m duplicati
-
-# # Set the working directory
-# WORKDIR /home/duplicati
-
-# Install dependencies
 RUN apt-get update && \
     apt-get install -y \
         wget \
@@ -26,19 +17,11 @@ RUN wget https://updates.duplicati.com/stable/duplicati-2.1.0.5_stable_2025-03-0
     dpkg -i duplicati.deb && \ 
     rm duplicati.deb
 
-# Set permissions for Duplicati
-# RUN chown -R duplicati:duplicati /usr/bin/duplicati-server && \
-#     chmod -R 755 /usr/bin/duplicati-server
-
-# copy the start script
 COPY ./tools/start.sh /usr/bin/start.sh
-# Set permissions for the start script
 RUN chmod +x /usr/bin/start.sh
 
-# Expose default Duplicati port
 EXPOSE 8200
 
-# Command to run Duplicati server
 ENTRYPOINT ["/usr/bin/start.sh"]
 
 # NOTE: duplicati needs an amd64 architecture to run properly.
