@@ -7,7 +7,7 @@ services:
             - "443:443"
             - "80:80"
         volumes:
-            - /home/achahid-/data/web:/var/www/html
+            - nginx-data:/var/www/html
         container_name: nginx
         depends_on:
             - wordpress
@@ -18,7 +18,7 @@ services:
         build: ./requirements/wordpress
         container_name: wordpress
         volumes:
-            - /home/achahid-/data/web:/var/www/html
+            - wordpress-data:/var/www/html
         depends_on:
             - mariadb
         networks:
@@ -30,7 +30,7 @@ services:
         build: ./requirements/mariadb
         container_name: mariadb
         volumes:
-            - /home/achahid-/data/database:/var/lib/mysql/
+            - mariadb-data:/var/lib/mysql/
         env_file:
             - .env
         restart: always
@@ -55,7 +55,7 @@ services:
         env_file:
             - .env
         volumes:
-            - /home/achahid-/data/web:/home/achahid-/ftp/wordpress
+            - ftp-data:/home/achahid-/ftp/wordpress
         restart: always
         networks:
             - internal
@@ -63,7 +63,7 @@ services:
         build: ./requirements/adminer
         container_name: adminer
         volumes:
-            - /home/achahid-/data/web:/var/www/html
+            - adminer-data:/var/www/html
         restart: always
         networks:
             - internal
@@ -87,3 +87,35 @@ services:
 networks:
     internal:
         driver: bridge
+
+volumes:
+    nginx-data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/achahid-/data/web
+    wordpress-data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/achahid-/data/web
+    mariadb-data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/achahid-/data/database
+    ftp-data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/achahid-/data/web
+    adminer-data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/achahid-/data/web
